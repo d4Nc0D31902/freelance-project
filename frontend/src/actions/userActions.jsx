@@ -59,9 +59,12 @@ export const login = (email, password) => async (dispatch) => {
       { email, password },
       config
     );
+
+    console.log("Login successful, payload:", data.data.user);
+
     dispatch({
       type: LOGIN_SUCCESS,
-      payload: data.user,
+      payload: data.data.user,
     });
   } catch (error) {
     console.log(error.response);
@@ -128,9 +131,9 @@ export const loadUser = () => async (dispatch) => {
 
     dispatch({
       type: LOAD_USER_SUCCESS,
-      payload: data.user,
+      payload: data.data.user,
     });
-    console.log("LOAD_USER_SUCCESS dispatched with payload:", data.user);
+    console.log("LOAD_USER_SUCCESS dispatched with payload:", data.data.user);
   } catch (error) {
     console.error("Error loading user:", error);
 
@@ -153,7 +156,7 @@ export const logout = () => async (dispatch) => {
       },
       withCredentials: true,
     };
-    await axios.get(
+    await axios.post(
       `${import.meta.env.VITE_APP_API}/api/v1/users/logout`,
       config
     );

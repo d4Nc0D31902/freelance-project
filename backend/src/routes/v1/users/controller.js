@@ -51,24 +51,6 @@ const getSingleUser = asyncHandler(async (req, res) => {
   );
 });
 
-const loginUser = asyncHandler(async (req, res) => {
-  const data = await service.getEmail(req.body.email);
-
-  if (!data) throw createError(STATUSCODE.NOT_FOUND, "No User found");
-
-  if (!(await bcrypt.compare(req.body.password, data.password)))
-    throw createError(STATUSCODE.UNAUTHORIZED, "Password does not match");
-
-  const accessToken = generateAccess({
-    id: data._id,
-    role: data[RESOURCE.ROLE],
-  });
-
-  setToken(accessToken.access);
-
-  responseHandler(res, data, "User Login successfully", accessToken);
-});
-
 const logoutUser = asyncHandler(async (req, res) => {
   const savedToken = getToken();
 
@@ -269,6 +251,30 @@ const getUserProfile = asyncHandler(async (req, res) => {
   });
 });
 
+const loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    throw createError(STATUSCODE.BAD_REQUEST, "Please enter email & password");
+  }
+
+  const user = await service.getByEmail(email);
+
+  if (!user) {
+    throw createError(STATUSCODE.UNAUTHORIZED, "Invalid Email or Password");
+  }
+
+  const isPasswordMatched = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordMatched) {
+    throw createError(STATUSCODE.UNAUTHORIZED, "Invalid Email or Password");
+  }
+
+  setToken(user, res);
+
+  responseHandler(res, { user }, "Login successful");
+});
+
 export {
   getAllUsers,
   getAllUsersDeleted,
@@ -278,10 +284,10 @@ export {
   deleteUser,
   restoreUser,
   forceDeleteUser,
-  loginUser,
   logoutUser,
   changeUserPassword,
   sendUserEmailOTP,
   resetUserEmailPassword,
   getUserProfile,
+  loginUser,
 };

@@ -152,6 +152,12 @@ async function resetPassword(verificationCode, newPassword, session) {
     .select(RESOURCE.PASSWORD);
 }
 
+async function getByEmail(email) {
+  return await model
+    .findOne({ email, deleted: false })
+    .select(RESOURCE.PASSWORD); 
+}
+
 export default {
   getAll,
   getAllDeleted,
@@ -161,6 +167,7 @@ export default {
   update,
   deleteById,
   restoreById,
+  getByEmail,
   forceDelete,
   changePassword,
   getCode,
