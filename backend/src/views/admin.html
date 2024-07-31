@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Email Notification</title>
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        margin: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .wrapper {
+        max-width: 600px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background-color: #fff;
+        text-align: center;
+      }
+      .title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .p-text {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        text-align: justify;
+      }
+      .start {
+        font-size: 1rem;
+        text-align: start;
+        margin-bottom: 10px;
+      }
+      .center {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .message {
+        font-size: 1rem;
+        text-align: start;
+        margin-bottom: 5px;
+        margin-top: 20px;
+      }
+      .end {
+        font-size: 1rem;
+        text-align: start;
+        margin-bottom: 5px;
+        margin-top: 10px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+      th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <div class="wrapper">
+        <h2 class="title">Go Virtual Form</h2>
+        <p class="p-text start">Dear {{name}},</p>
+        <p class="p-text">
+          We are pleased to inform you that a new form has been successfully
+          filled up.
+        </p>
+        <p class="center">Here are the submission details</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each result}}
+            <tr>
+              <td>{{@key}}</td>
+              <td>{{this}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <p class="p-text">
+          You have received a total of {{submissionCount}} submissions for this
+          form.
+        </p>
+        <p class="center">Thank you for using Quick Form.</p>
+        <p class="message">Best regards,</p>
+        <p class="end">Go Virtual Team</p>
+      </div>
+    </main>
+  </body>
+</html>
